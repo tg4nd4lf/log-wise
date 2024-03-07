@@ -7,7 +7,7 @@ with open('README.md', "r") as f:
     long_description = f.read()
 
 setup(
-    name='logging',
+    name='log-wise',
     version=__version__,
     package_dir={"": "src"},
     packages=find_packages(where="src"),
@@ -16,7 +16,7 @@ setup(
     description='Packet for a standardized logger.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/klaus-moser/logging',
+    url='https://github.com/klaus-moser/log-wise',
     install_requires=[
         'setuptools==69.1.1',
         'utils==1.0.2',
