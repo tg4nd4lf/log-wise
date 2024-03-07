@@ -16,15 +16,15 @@
 import os
 import logging
 import datetime
-from app.logger.src.formatter import CustomFormatter
+from src.formatter import CustomFormatter
 from time import ctime
 
-__version__ = "0.1"
+__version__ = "0.2"
 __author__ = "klaus-moser"
 __date__ = ctime(os.path.getmtime(__file__))
 
 
-def configure_logger() -> logging.Logger:
+def configure_logger(filename: str = "my_app_") -> logging.Logger:
     """
     Set up logger.
 
@@ -46,7 +46,8 @@ def configure_logger() -> logging.Logger:
     # Create file handler for logging to a file (logs all five levels)
     today = datetime.date.today()
 
-    file_handler = logging.FileHandler(filename=os.path.join(os.path.dirname(__file__), 'my_app_{}.log'.format(today.strftime('%Y_%m_%d'))))
+    file_handler = logging.FileHandler(
+        filename=os.path.join(os.path.dirname(__file__), '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))))
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter(fmt))
 
@@ -58,9 +59,4 @@ def configure_logger() -> logging.Logger:
 
 
 if __name__ == '__main__':
-    log = configure_logger()
-    log.debug("Hello World!")
-    log.info("Hello World!")
-    log.warning("Hello World!")
-    log.error("Hello World!")
-    log.critical("Hello World!")
+    print(__file__)

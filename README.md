@@ -4,6 +4,12 @@
 
 Credits: https://stackoverflow.com/a/56944256/3638629
 
+## Build
+
+`
+python setup.py sdist bdist_wheel
+`
+
 ## Usage
 
 ![grafik](https://github.com/klaus-moser/logging/assets/60796711/7865eaf7-3b16-439e-9e5d-e2b2a5f03696)

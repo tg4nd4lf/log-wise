@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from app.logger.src.logger import __version__
+from src.logger import __version__
 
 
 # read description
@@ -7,16 +7,16 @@ with open('README.md', "r") as f:
     long_description = f.read()
 
 setup(
-    name='logging',
+    name='log-wise',
     version=__version__,
-    package_dir={"": "app"},
-    packages=find_packages(where="app"),
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
     author='Klaus Moser',
     author_email='60796711+klaus-moser@users.noreply.github.com',
     description='Packet for a standardized logger.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/klaus-moser/logging',
+    url='https://github.com/klaus-moser/log-wise',
     install_requires=[
         'setuptools==69.1.1',
         'utils==1.0.2',
