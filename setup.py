@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from app.logger.src.logger import __version__
+from src.logger import __version__
 
 
 # read description
@@ -9,8 +9,8 @@ with open('README.md', "r") as f:
 setup(
     name='logging',
     version=__version__,
-    package_dir={"": "app"},
-    packages=find_packages(where="app"),
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
     author='Klaus Moser',
     author_email='60796711+klaus-moser@users.noreply.github.com',
     description='Packet for a standardized logger.',
