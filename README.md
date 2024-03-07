@@ -1,6 +1,6 @@
 # logging
 
-'logging' is a Python library for dealing with word pluralization.
+'logging' is a Python library for a default logger, useable in all projects.
 
 Credits: https://stackoverflow.com/a/56944256/3638629
 
