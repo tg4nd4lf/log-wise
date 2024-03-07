@@ -1,6 +1,5 @@
+import os
 import logging
-from os.path import join
-from utils.logger import log_dir
 
 
 # Create a root_logger for the package
@@ -15,10 +14,10 @@ def configure_logger() -> None:
     """
 
     # Set the logging level to INFO
-    #logger.setLevel(logging.INFO)
+    logger.setLevel(logging.INFO)
 
     # Create a handler to write log messages to a file
-    handler = logging.FileHandler(join(log_dir, __name__ + '.log'))
+    handler = logging.FileHandler(filename=os.path.join(os.path.dirname(__file__), 'my_app_{}.log'.format(today.strftime('%Y_%m_%d'))))
 
     # Create a formatter to format log messages
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -26,6 +25,7 @@ def configure_logger() -> None:
 
     # Add the console handler to the root_logger
     logger.addHandler(handler)
+
 
 # Call the configuration function to set up the root_logger
 configure_logger()
