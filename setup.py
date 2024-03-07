@@ -20,7 +20,8 @@ setup(
     install_requires=[
         'setuptools==69.1.1',
         'utils==1.0.2',
-        'wheel==0.42.0'
+        'wheel==0.42.0',
+        'twine==5.0.0'
     ],
     classifiers=[
         'Intended Audience :: Developers',

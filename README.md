@@ -4,8 +4,18 @@
 
 Credits: https://stackoverflow.com/a/56944256/3638629
 
+## Install
+
+- Use the 'setup.py' 
+- PyPi.org
+
 ## Build
 
+#### Check all files are valid
+`
+twine check dist/*
+`
+#### Build
 `
 python setup.py sdist bdist_wheel
 `
