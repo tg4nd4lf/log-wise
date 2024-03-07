@@ -1,6 +1,6 @@
 
 .idea/
 
-src/__pycache__/
+app/logger/src/__pycache__/
 
 *.log
