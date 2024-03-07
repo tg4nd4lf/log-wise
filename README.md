@@ -1,6 +1,6 @@
-# logging
+# log-wise 
 
-'logging' is a Python library for a default logger, useable in all projects.
+'log-wise ' is a Python library for a default logger, useable in all projects.
 
 Credits: https://stackoverflow.com/a/56944256/3638629
 
