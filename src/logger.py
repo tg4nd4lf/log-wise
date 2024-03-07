@@ -16,7 +16,7 @@
 import os
 import logging
 import datetime
-from app.logger.src.formatter import CustomFormatter
+from src.formatter import CustomFormatter
 from time import ctime
 
 __version__ = "0.1"
@@ -58,9 +58,4 @@ def configure_logger() -> logging.Logger:
 
 
 if __name__ == '__main__':
-    log = configure_logger()
-    log.debug("Hello World!")
-    log.info("Hello World!")
-    log.warning("Hello World!")
-    log.error("Hello World!")
-    log.critical("Hello World!")
+    print(__file__)
