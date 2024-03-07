@@ -16,7 +16,7 @@
 import os
 import logging
 import datetime
-from formatter import CustomFormatter
+from app.logger.src.formatter import CustomFormatter
 from time import ctime
 
 __version__ = "0.1"
