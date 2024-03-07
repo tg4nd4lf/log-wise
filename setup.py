@@ -1,15 +1,10 @@
 from setuptools import setup, find_packages
-from app.logger import __version__
+from app.logger.src.logger import __version__
 
-
-# read requirements.txt
-with open('requirements.txt', "r") as f:
-    requirements = f.read().splitlines()
 
 # read description
 with open('README.md', "r") as f:
     long_description = f.read()
-
 
 setup(
     name='logging',
@@ -22,7 +17,11 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/klaus-moser/logging',
-    install_requires=requirements,
+    install_requires=[
+        'setuptools==69.1.1',
+        'utils==1.0.2',
+        'wheel==0.42.0'
+    ],
     classifiers=[
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
