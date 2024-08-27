@@ -17,38 +17,40 @@ import os
 import logging
 import datetime
 from .formatter import CustomFormatter
-from time import ctime
 
-__version__ = "0.2"
+__version__ = "1.0"
 __author__ = "klaus-moser"
-__date__ = ctime(os.path.getmtime(__file__))
 
 
-def configure_logger(filename: str = "my_app_") -> logging.Logger:
+def configure_logger(filename: str = None) -> logging.Logger:
     """
     Set up logger.
 
     :return: Logger instance.
     """
 
-    # Create custom logger logging all five levels
+    # Create custom logger
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     # Define format for logs
     fmt = '%(asctime)s | %(levelname)8s | %(message)s'
 
-    # Create stdout handler for logging to the console (logs all five levels)
+    # Create stdout handler for logging to the console
     stdout_handler = logging.StreamHandler()
-    stdout_handler.setLevel(logging.DEBUG)
+    stdout_handler.setLevel(logging.INFO)
     stdout_handler.setFormatter(CustomFormatter(fmt))
 
-    # Create file handler for logging to a file (logs all five levels)
+    # Create file handler for logging to a file
     today = datetime.date.today()
 
-    file_handler = logging.FileHandler(
-        filename=os.path.join(os.path.dirname(__file__), '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))))
-    file_handler.setLevel(logging.DEBUG)
+    if filename is None:
+        filename = os.path.join(os.path.dirname(__file__), '{}_{}.log'.format("my_app_", today.strftime('%Y_%m_%d')))
+    else:
+        filename = '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))
+
+    file_handler = logging.FileHandler(filename=filename)
+    file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(logging.Formatter(fmt))
 
     # Add both handlers to the logger
