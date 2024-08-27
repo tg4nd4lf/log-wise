@@ -18,7 +18,7 @@ import logging
 import datetime
 from .formatter import CustomFormatter
 
-__version__ = "1.0"
+__version__ = "1.1"
 __author__ = "klaus-moser"
 
 
@@ -44,10 +44,14 @@ def configure_logger(filename: str = None) -> logging.Logger:
     # Create file handler for logging to a file
     today = datetime.date.today()
 
-    if filename is None:
-        filename = os.path.join(os.path.dirname(__file__), '{}_{}.log'.format("my_app_", today.strftime('%Y_%m_%d')))
-    else:
-        filename = '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))
+    try:
+        if filename is None:
+            filename = os.path.join(os.path.dirname(__file__), '{}_{}.log'.format("my_app_", today.strftime('%Y_%m_%d')))
+        else:
+            filename = '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))
+    except (NameError, TypeError, FileNotFoundError, PermissionError) as e:
+        print(f"Error: {e}")
+        raise  # Re-raises the original exception
 
     file_handler = logging.FileHandler(filename=filename)
     file_handler.setLevel(logging.INFO)
