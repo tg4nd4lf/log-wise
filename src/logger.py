@@ -18,48 +18,49 @@ import logging
 import datetime
 from .formatter import CustomFormatter
 
-__version__ = "1.1"
+__version__ = "2.0"
 __author__ = "klaus-moser"
 
 
-def configure_logger(filename: str = None) -> logging.Logger:
+def get_logger(name: str, log_file: str = None) -> logging.Logger:
     """
-    Set up logger.
+    Get a logger with the specified name and optional log file.
 
-    :return: Logger instance.
+    :param name: Name of the logger.
+    :param log_file: Path to the log file (optional).
+    :return: Configured logger.
     """
 
-    # Create custom logger
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    logger = logging.getLogger(name)  # Create custom logger
 
-    # Define format for logs
-    fmt = '%(asctime)s | %(levelname)8s | %(message)s'
+    if not logger.hasHandlers():  # Avoid adding handlers if they are already added
+        logger.setLevel(logging.INFO)
 
-    # Create stdout handler for logging to the console
-    stdout_handler = logging.StreamHandler()
-    stdout_handler.setLevel(logging.INFO)
-    stdout_handler.setFormatter(CustomFormatter(fmt))
+        fmt = '%(asctime)s | %(levelname)8s | %(message)s'  # Define format for logs
 
-    # Create file handler for logging to a file
-    today = datetime.date.today()
+        # Create stdout handler for logging to the console
+        stdout_handler = logging.StreamHandler()
+        stdout_handler.setLevel(level=logging.INFO)
+        stdout_handler.setFormatter(fmt=CustomFormatter(fmt))
+        logger.addHandler(hdlr=stdout_handler)  # Add handler
 
-    try:
-        if filename is None:
-            filename = os.path.join(os.path.dirname(__file__), '{}_{}.log'.format("my_app_", today.strftime('%Y_%m_%d')))
+        if log_file:
+            log_dir = os.path.dirname(log_file)  # Ensure the log directory exists
+
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+
+            # Create file handler
+            today = datetime.date.today()
+            log_file = f"{log_file}_{today.strftime('%Y_%m_%d')}.log"
+
+            file_handler = logging.FileHandler(filename=log_file)
+            file_handler.setLevel(level=logging.INFO)
+            file_handler.setFormatter(fmt=logging.Formatter(fmt))
+            logger.addHandler(hdlr=file_handler)  # Add handler
         else:
-            filename = '{}_{}.log'.format(filename, today.strftime('%Y_%m_%d'))
-    except (NameError, TypeError, FileNotFoundError, PermissionError) as e:
-        print(f"Error: {e}")
-        raise  # Re-raises the original exception
-
-    file_handler = logging.FileHandler(filename=filename)
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(logging.Formatter(fmt))
-
-    # Add both handlers to the logger
-    logger.addHandler(stdout_handler)
-    logger.addHandler(file_handler)
+            # Default behavior when log_file is None or an empty string
+            logger.warning("No log file specified. Logging will be done only to the console.")
 
     return logger
 
