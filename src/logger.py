@@ -38,7 +38,7 @@ def get_logger(name: str, log_file: str = None) -> logging.Logger:
 
         fmt = '%(asctime)s | %(levelname)8s | %(message)s'  # Define format for logs
 
-        # Create stdout handler for logging to the console
+        # Create stdout handler for logging to the console (COLOR!)
         stdout_handler = logging.StreamHandler()
         stdout_handler.setLevel(level=logging.INFO)
         stdout_handler.setFormatter(fmt=CustomFormatter(fmt))
@@ -54,6 +54,7 @@ def get_logger(name: str, log_file: str = None) -> logging.Logger:
             today = datetime.date.today()
             log_file = f"{log_file}_{today.strftime('%Y_%m_%d')}.log"
 
+            # Create file handler for logging to a file (NO COLOR!)
             file_handler = logging.FileHandler(filename=log_file)
             file_handler.setLevel(level=logging.INFO)
             file_handler.setFormatter(fmt=logging.Formatter(fmt))
