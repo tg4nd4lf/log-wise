@@ -16,18 +16,21 @@
 import os
 import logging
 import datetime
-from .formatter import CustomFormatter
 
-__version__ = "2.0"
+from .formatter import CustomFormatter
+from logging.handlers import TimedRotatingFileHandler
+
+__version__ = "2.1"
 __author__ = "klaus-moser"
 
 
-def get_logger(name: str, log_file: str = None) -> logging.Logger:
+def get_logger(name: str, log_file: str = None, backup_days: int = 7) -> logging.Logger:
     """
     Get a logger with the specified name and optional log file.
 
     :param name: Name of the logger.
     :param log_file: Path to the log file (optional).
+    :param backup_days: Number of days to keep log files.
     :return: Configured logger.
     """
 
@@ -50,19 +53,21 @@ def get_logger(name: str, log_file: str = None) -> logging.Logger:
             if not os.path.exists(log_dir):
                 os.makedirs(log_dir)
 
-            # Create file handler
             today = datetime.date.today()
             log_file = f"{log_file}_{today.strftime('%Y_%m_%d')}.log"
 
-            # Create file handler for logging to a file (NO COLOR!)
-            file_handler = logging.FileHandler(filename=log_file)
+            # Create a rotating file handler for logging to a file (NO COLOR!)
+            file_handler = TimedRotatingFileHandler(
+                filename=log_file,
+                when='midnight',  # Rotate at midnight
+                interval=1,  # Rotate every 1 day
+                backupCount=7  # Keep logs for the last 7 days
+            )
             file_handler.setLevel(level=logging.INFO)
             file_handler.setFormatter(fmt=logging.Formatter(fmt))
             logger.addHandler(hdlr=file_handler)  # Add handler
         else:
-            # Default behavior when log_file is None or an empty string
             logger.warning("No log file specified. Logging will be done only to the console.")
-
     return logger
 
 
