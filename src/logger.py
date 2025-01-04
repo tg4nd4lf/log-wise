@@ -13,9 +13,8 @@
 
 """ Logger. """
 
-import os
 import logging
-
+from pathlib import Path
 from .formatter import CustomFormatter
 from logging.handlers import TimedRotatingFileHandler
 
@@ -46,25 +45,31 @@ def get_logger(name: str, log_file: str = None, backup_days: int = 7) -> logging
         stdout_handler.setFormatter(fmt=CustomFormatter(fmt))
         logger.addHandler(hdlr=stdout_handler)  # Add handler
 
-        if log_file:
-            log_dir = os.path.dirname(log_file)  # Ensure the log directory exists
-
-            if not os.path.exists(log_dir):
-                os.makedirs(log_dir)
-
-            # Create a rotating file handler for logging to a file (NO COLOR!)
-            file_handler = TimedRotatingFileHandler(
-                filename=log_file,
-                when='midnight',  # Rotate at midnight
-                interval=1,  # Rotate every 1 day
-                backupCount=backup_days  # Keep logs for the last X days
-            )
-            file_handler.suffix = "%Y_%m_%d.log"  # Custom suffix for rotated files
-            file_handler.setLevel(level=logging.INFO)
-            file_handler.setFormatter(fmt=logging.Formatter(fmt))
-            logger.addHandler(hdlr=file_handler)  # Add handler
-        else:
+        if not log_file:
             logger.warning("No log file specified. Logging will be done only to the console.")
+            return logger
+
+        if not log_file.endswith(".log"):
+            log_file = log_file.rstrip(".")  # Remove any trailing dots
+            log_file = log_file + ".log"  # Ensure it ends with .log
+
+        log_dir = Path(log_file).parent  # Get the directory from the log path
+
+        if not log_dir.exists():  # Ensure the log directory exists
+            log_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create a rotating file handler for logging to a file (NO COLOR!)
+        file_handler = TimedRotatingFileHandler(
+            filename=log_file,
+            when='midnight',  # Rotate at midnight
+            interval=1,  # Rotate every 1 day
+            backupCount=backup_days  # Keep logs for the last X days
+        )
+        file_handler.suffix = "%Y_%m_%d.log"  # Custom suffix for rotated files
+        file_handler.setLevel(level=logging.INFO)
+        file_handler.setFormatter(fmt=logging.Formatter(fmt))
+        logger.addHandler(hdlr=file_handler)  # Add handler
+
     return logger
 
 
