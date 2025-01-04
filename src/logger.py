@@ -15,12 +15,11 @@
 
 import os
 import logging
-import datetime
 
 from .formatter import CustomFormatter
 from logging.handlers import TimedRotatingFileHandler
 
-__version__ = "2.1"
+__version__ = "2.2"
 __author__ = "klaus-moser"
 
 
@@ -53,16 +52,14 @@ def get_logger(name: str, log_file: str = None, backup_days: int = 7) -> logging
             if not os.path.exists(log_dir):
                 os.makedirs(log_dir)
 
-            today = datetime.date.today()
-            log_file = f"{log_file}_{today.strftime('%Y_%m_%d')}.log"
-
             # Create a rotating file handler for logging to a file (NO COLOR!)
             file_handler = TimedRotatingFileHandler(
                 filename=log_file,
                 when='midnight',  # Rotate at midnight
                 interval=1,  # Rotate every 1 day
-                backupCount=7  # Keep logs for the last 7 days
+                backupCount=backup_days  # Keep logs for the last X days
             )
+            file_handler.suffix = "%Y_%m_%d.log"  # Custom suffix for rotated files
             file_handler.setLevel(level=logging.INFO)
             file_handler.setFormatter(fmt=logging.Formatter(fmt))
             logger.addHandler(hdlr=file_handler)  # Add handler
