@@ -63,7 +63,7 @@ def get_logger(name: str, log_file: str = None, backup_days: int = 7) -> logging
             interval=1,  # Rotate every 1 day
             backupCount=backup_days  # Keep logs for the last X days
         )
-        file_handler.suffix = "%Y_%m_%d.log"  # Custom suffix for rotated files
+        file_handler.suffix = "%Y-%m-%d"  # Custom suffix for rotated files
         file_handler.setLevel(level=logging.INFO)
         file_handler.setFormatter(fmt=logging.Formatter(fmt))
         logger.addHandler(hdlr=file_handler)  # Add handler
