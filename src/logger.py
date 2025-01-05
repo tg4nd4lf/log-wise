@@ -49,14 +49,12 @@ def get_logger(name: str, log_file: str = None, backup_days: int = 7) -> logging
             logger.warning("No log file specified. Logging will be done only to the console.")
             return logger
 
-        if not log_file.endswith(".log"):
-            log_file = log_file.rstrip(".")  # Remove any trailing dots
-            log_file = log_file + ".log"  # Ensure it ends with .log
+        log_file = Path(log_file)
 
-        log_dir = Path(log_file).parent  # Get the directory from the log path
+        if not log_file.suffix:  # Ensure ".log" extension
+            log_file = log_file.with_suffix(".log")
 
-        if not log_dir.exists():  # Ensure the log directory exists
-            log_dir.mkdir(parents=True, exist_ok=True)
+        log_file.parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
 
         # Create a rotating file handler for logging to a file (NO COLOR!)
         file_handler = TimedRotatingFileHandler(
