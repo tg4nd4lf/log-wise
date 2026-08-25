@@ -1,30 +1,44 @@
-# log-wise 
+# log-wise
 
-'log-wise ' is a Python library for a default logger, usable in all projects.
-
-Credits: https://stackoverflow.com/a/56944256/3638629
+Drop-in coloured logger with daily file rotation for any Python project.
 
 ## Install
 
-- Use the 'setup.py' 
-- PyPi.org
+```bash
+# From the repo (editable, for local development)
+pip install -e .
 
-## Build
-
-#### Check all files are valid
-`
-twine check dist/*
-`
-#### Build
-`
-python setup.py sdist bdist_wheel
-`
+# Or directly from GitHub
+pip install git+https://github.com/klaus-moser/log-wise.git
+```
 
 ## Usage
 
-![grafik](https://github.com/klaus-moser/logging/assets/60796711/7865eaf7-3b16-439e-9e5d-e2b2a5f03696)
+```python
+from log_wise import get_logger
 
-![grafik](https://github.com/klaus-moser/logging/assets/60796711/007114a9-f8f9-4886-8a2b-2a0fd38cde21)
+# Console only
+log = get_logger(__name__)
+
+# Console + daily rotated log file
+log = get_logger(__name__, log_file="logs/app")
+
+log.debug("debug message")
+log.info("info message")
+log.warning("warning message")
+log.error("error message")
+log.critical("critical message")
+```
+
+### Parameters
+
+| Parameter      | Default                                          | Description                          |
+| -------------- | ------------------------------------------------ | ------------------------------------ |
+| `name`         | —                                                | Logger name (typically `__name__`)   |
+| `level`        | `logging.INFO`                                   | Minimum log level                    |
+| `log_file`     | `None`                                           | Path to log file (`.log` auto-added) |
+| `backup_days`  | `7`                                              | Days to keep rotated files           |
+| `fmt`          | `%(asctime)s \| %(levelname)8s \| %(message)s`   | Log format string                    |
 
 ## License
 
